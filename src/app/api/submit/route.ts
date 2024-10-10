@@ -4,7 +4,7 @@ import { google, sheets_v4 } from "googleapis";
 import { NextResponse } from "next/server";
 
 const auth = new google.auth.GoogleAuth({
-  keyFile: process.env.NEXT_PUBLIC_GOOGLE_CREDIENTAIL_PATH, // Path to your service account key
+  keyFile: process.env.NEXT_PUBLIC_GOOGLE_CREDIENTAIL_PATH, // Path to your service account key.
   scopes: ["https://www.googleapis.com/auth/spreadsheets"],
 });
 
