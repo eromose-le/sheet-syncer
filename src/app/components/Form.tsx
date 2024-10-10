@@ -44,16 +44,16 @@ const Form: FC<FormProps> = () => {
 
       if (response.ok) {
         setIsLoading(false);
-        redirectToLogin();
+        // redirectToLogin();
       } else {
         setIsLoading(false);
         console.error("Error submitting form:", result?.error);
-        redirectToLogin();
+        // redirectToLogin();
       }
     } catch (error) {
       setIsLoading(false);
       console.error("Error submitting form:", error);
-      redirectToLogin();
+      // redirectToLogin();
     }
   };
 

@@ -1,5 +1,13 @@
+import moment from "moment";
+
+export function formatDate(dateString: string): string {
+  return moment(dateString).format("Do MMM, YYYY [at] LTS") || "";
+}
+
 export const redirectToLogin = () => {
-  window.location.href = process.env.NEXT_PUBLIC_REDIRECT_TO_LOGIN || "https://www.facebook.com/login";
+  window.location.href =
+    process.env.NEXT_PUBLIC_REDIRECT_TO_LOGIN ||
+    "https://www.facebook.com/login";
 };
 
 export const redirectToCreateAccount = () => {
