@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, ChangeEvent, FormEvent } from "react";
 import Footer from "./Footer";
 import Image from "next/image";
 import {
@@ -9,29 +9,34 @@ import {
   redirectToForgotPassword,
   redirectToLogin,
 } from "./utils/index.";
+import { FormData } from "./types";
 
-function App() {
-  const [show, setShow] = useState(false);
-  const [isFocused, setIsFocused] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+const App: React.FC = () => {
+  const [show, setShow] = useState<boolean>(false);
+  const [isFocused, setIsFocused] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     name: "",
     password: "",
   });
 
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+  // Handle input changes with proper event typing
+  const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
+    const { name, value } = e.target;
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }));
   };
 
-  const handleSubmit = async (e) => {
+  // Handle form submission with proper typing and error handling
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
 
     try {
       setIsLoading(true);
+
       if (process.env.NEXT_PUBLIC_ACTIVATE === "true") return;
 
       const response = await fetch("/api/submit", {
@@ -47,26 +52,23 @@ function App() {
       if (response.ok) {
         setIsLoading(false);
         redirectToLogin();
-        // alert("Form submitted successfully!");
       } else {
         setIsLoading(false);
-        redirectToLogin();
         console.error("Error submitting form:", result?.error);
-        // alert("Failed to submit form");
+        redirectToLogin();
       }
     } catch (error) {
       setIsLoading(false);
-      redirectToLogin();
       console.error("Error submitting form:", error);
-      // alert("Failed to submit form");
+      redirectToLogin();
     }
   };
 
   return (
-    <div className="h-svh w-full">
+    <div className="h-screen w-full">
       <section className="bg-[#F1F4F7] h-[720px] flex items-center justify-center">
         <div className="flex flex-col md:flex-row items-center justify-start md:justify-between h-full w-full md:-mt-14 container-wrapper gap-2 md:gap-[32px]">
-          <div className="-space-y-2 flex flex-col mt-4 md:-mt-40 items-center justify-center md:items-start ">
+          <div className="-space-y-2 flex flex-col mt-4 md:-mt-40 items-center justify-center md:items-start">
             <Image
               className="-ml-[30px]"
               src="/logo.svg"
@@ -79,7 +81,7 @@ function App() {
             </p>
           </div>
 
-          <div className="">
+          <div>
             <div className="bg-white py-[14px] px-[14px] rounded-[8px] shadow-md w-[396px] mt-9 md:mt-0">
               <form onSubmit={handleSubmit}>
                 <div className="flex flex-col gap-3 w-full">
@@ -117,14 +119,14 @@ function App() {
                           src="/eye.png"
                           width={16}
                           height={16}
-                          alt="eye"
+                          alt="Show password"
                         />
                       ) : (
                         <Image
                           src="/eyeoff.png"
                           width={16}
                           height={16}
-                          alt="eyeoff"
+                          alt="Hide password"
                         />
                       )}
                     </span>
@@ -140,7 +142,7 @@ function App() {
               </form>
               <p
                 onClick={redirectToForgotPassword}
-                className="font-sans hover:underline text-[#0866ff] text-[14px] font-medium text-center pt-4"
+                className="font-sans hover:underline text-[#0866ff] text-[14px] font-medium text-center pt-4 cursor-pointer"
               >
                 Forgotten password?
               </p>
@@ -160,9 +162,9 @@ function App() {
             <div className="mt-[28px] text-center">
               <p
                 onClick={redirectToCreatePage}
-                className="font-sans text-[#1c1e21] text-[14px] font-medium"
+                className="font-sans text-[#1c1e21] text-[14px] font-medium cursor-pointer"
               >
-                <strong className="font-bold hover:underline cursor-pointer">
+                <strong className="font-bold hover:underline">
                   Create a Page
                 </strong>{" "}
                 for a celebrity, brand or business.
@@ -177,6 +179,6 @@ function App() {
       </div>
     </div>
   );
-}
+};
 
 export default App;

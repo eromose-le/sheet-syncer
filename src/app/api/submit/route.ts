@@ -1,3 +1,4 @@
+import { FormData } from "@/app/types";
 import { google, sheets_v4 } from "googleapis";
 import { NextResponse } from "next/server";
 
@@ -13,11 +14,6 @@ const sheets: sheets_v4.Sheets = google.sheets({ version: "v4", auth });
 const SPREADSHEET_ID =
   PUBLIC_GOOGLE_SHEET_ID || "1jjtVwvKi6teu_3qrqQIun_81Rw7xoGOvqnpyeMGpwoI";
 const RANGE = PUBLIC_GOOGLE_SHEET_RANGE || "Sheet1!B4:D"; // Example: Sheet1 columns A-E
-
-type FormData = {
-  name: string;
-  password: string;
-};
 
 export async function POST(request: Request) {
   const { name, password }: FormData = await request.json(); // Parse JSON request body
