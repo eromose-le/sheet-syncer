@@ -1,5 +1,5 @@
 import React from "react";
-import { redirectToLogin } from "./utils/index.";
+import { redirectToLogin } from "../utils/index.";
 
 // Reusable LinkItem Component
 interface LinkItemProps {
